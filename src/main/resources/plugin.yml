@@ -1,0 +1,9 @@
+name: Challange
+version: '${project.version}'
+main: com.darkvoidstudios.mcchallenges.challenge.Main
+description: This plugin does so much stuff it can't be contained!
+author: Brok3nmind
+api-version: 1.19
+commands:
+  challenge:
+    description: Toggles the challanges

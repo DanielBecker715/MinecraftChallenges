@@ -1,0 +1,90 @@
+package com.darkvoidstudios.mcchallenges.challenge;
+
+import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
+import com.darkvoidstudios.mcchallenges.challenge.models.Messages;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.time.Instant;
+
+public class ChallengeCommand implements CommandExecutor {
+    private static Server server = Bukkit.getServer();
+    Challenge challenge;
+
+    public ChallengeCommand(Challenge challenge) {
+        this.challenge = challenge;
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (sender.hasPermission("challenge.use")) {
+            if (args.length == 0) {
+                sender.sendMessage(Messages.commandParameterError);
+            } else {
+                if (args[0].equalsIgnoreCase("start")) {
+                    if (!challenge.isChallengeActive()) {
+                        challenge.setTimerStartTimestamp(Instant.now());
+                        challenge.setChallengeActive(true);
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.setMaxHealth(challenge.getMaxHealth());
+                            player.setHealth(challenge.getMaxHealth());
+                            player.setSaturation(20);
+                            player.getInventory().clear();
+                            player.playSound(player.getLocation(), "entity.wolf.howl", 40f, 1f);
+                            server.broadcast(Component.text(Messages.challengeStarted));
+                        }
+                    }
+                } else if (args[0].equalsIgnoreCase("add")) {
+                    // Challenges
+                    switch(args[1].toLowerCase()) {
+                        case "randomitems":
+                            if (!challenge.isRandomItemChallengeActive()) {
+                                challenge.setRandomItemChallengeActive(true);
+                                server.broadcast(Component.text(Messages.prefix + "Added challenge §aRandom-Items"));
+                                break;
+                            } else {
+                                sender.sendMessage(Messages.challengeAlreadyAdded);
+                                break;
+                            }
+                        case "5hearts":
+                            if (!challenge.is5HeartChallengeActive()) {
+                                challenge.set5HeartChallengeActive(true);
+                                challenge.setMaxHealth(10);
+                                for (Player player : Bukkit.getOnlinePlayers()) {
+                                    player.setMaxHealth(challenge.getMaxHealth());
+                                    player.setHealth(challenge.getMaxHealth());
+                                }
+                                server.broadcast(Component.text(Messages.prefix + "Added challenge §a5-Hearts"));
+                                break;
+                            } else {
+                                sender.sendMessage(Messages.challengeAlreadyAdded);
+                                break;
+                            }
+                        default:
+                            sender.sendMessage(Messages.prefix + "§cWrong syntax! §7/challenge add §e<challenge>");
+                            break;
+
+                    }
+                } else if (args[0].equalsIgnoreCase("stop")) {
+                    if (challenge.isChallengeActive()) {
+                        challenge.disableAllChallenges();
+                        challenge.challengeFailed();
+                    } else {
+                        sender.sendMessage(Messages.noChallengeRunning);
+                    }
+                } else {
+                    sender.sendMessage(Messages.commandParameterError);
+                }
+            }
+        } else {
+            sender.sendMessage(Messages.invalidPermissions);
+        }
+        return true;
+    }
+}
