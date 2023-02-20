@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.Instant;
 
 public class ChallengeCommand implements CommandExecutor {
-    private static Server server = Bukkit.getServer();
+    private static final Server server = Bukkit.getServer();
     Challenge challenge;
 
     public ChallengeCommand(Challenge challenge) {
@@ -37,8 +37,8 @@ public class ChallengeCommand implements CommandExecutor {
                             player.setSaturation(20);
                             player.getInventory().clear();
                             player.playSound(player.getLocation(), "entity.wolf.howl", 40f, 1f);
-                            server.broadcast(Component.text(Messages.challengeStarted));
                         }
+                        server.broadcast(Component.text(Messages.challengeStarted));
                     }
                 } else if (args[0].equalsIgnoreCase("add")) {
                     // Challenges
@@ -47,6 +47,15 @@ public class ChallengeCommand implements CommandExecutor {
                             if (!challenge.isRandomItemChallengeActive()) {
                                 challenge.setRandomItemChallengeActive(true);
                                 server.broadcast(Component.text(Messages.prefix + "Added challenge §aRandom-Items"));
+                                break;
+                            } else {
+                                sender.sendMessage(Messages.challengeAlreadyAdded);
+                                break;
+                            }
+                        case "pdare":
+                            if (!challenge.isPDAREChallengeActive()) {
+                                challenge.setPDAREChallengeActive(true);
+                                server.broadcast(Component.text(Messages.prefix + "Added challenge §aPlayer Damage And Random Effects"));
                                 break;
                             } else {
                                 sender.sendMessage(Messages.challengeAlreadyAdded);

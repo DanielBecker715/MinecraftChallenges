@@ -12,8 +12,8 @@ import java.time.Instant;
 @Getter
 @Setter
 public class Challenge {
+    private static final Server server = Bukkit.getServer();
 
-    private static Server server = Bukkit.getServer();
 
     boolean isChallengeActive = false;
     Instant timerStartTimestamp;
@@ -23,10 +23,14 @@ public class Challenge {
     private boolean isRandomItemChallengeActive = false;
     private boolean is5HeartChallengeActive = false;
 
+    //PDARE -> Player Damage And Random Effect
+    private boolean isPDAREChallengeActive = false;
+
     public void disableAllChallenges() {
         setChallengeActive(false);
         setRandomItemChallengeActive(false);
         set5HeartChallengeActive(false);
+        setPDAREChallengeActive(false);
         setMaxHealth(20);
     }
 
