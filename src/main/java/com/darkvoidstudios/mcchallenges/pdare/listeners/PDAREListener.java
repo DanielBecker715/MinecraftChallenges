@@ -1,4 +1,4 @@
-package com.darkvoidstudios.mcchallenges.challenge.listeners;
+package com.darkvoidstudios.mcchallenges.pdare.listeners;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.challenge.models.Messages;
@@ -15,13 +15,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static org.bukkit.potion.PotionEffectType.*;
 
-public class PlayerDamageRandomEffectListener implements Listener {
+public class PDAREListener implements Listener {
 
-    Challenge challenge;
-
-    public PlayerDamageRandomEffectListener(Challenge challenge) {
-        this.challenge = challenge;
-    }
+    Challenge challenge = Challenge.getInstance();
 
     int duration;
 
@@ -37,6 +33,8 @@ public class PlayerDamageRandomEffectListener implements Listener {
                         case WITHER:
                         case POISON:
                         case FIRE:
+                        case DROWNING:
+                        case LAVA:
                         case FIRE_TICK:
                             triggerEvent = false;
                             break;

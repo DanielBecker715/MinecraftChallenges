@@ -1,7 +1,10 @@
-package com.darkvoidstudios.mcchallenges.challenge;
+package com.darkvoidstudios.mcchallenges.challenge.commands;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.challenge.models.Messages;
+import com.darkvoidstudios.mcchallenges.challenge.models.ActionbarTimer;
+import com.darkvoidstudios.mcchallenges.challenge.schedulers.ChallengeTimer;
+import com.darkvoidstudios.mcchallenges.randomitem.RandomItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -11,15 +14,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
-
 public class ChallengeCommand implements CommandExecutor {
     private static final Server server = Bukkit.getServer();
-    Challenge challenge;
 
-    public ChallengeCommand(Challenge challenge) {
-        this.challenge = challenge;
-    }
+    Challenge challenge = Challenge.getInstance();
+    ChallengeTimer challengeTimer = ChallengeTimer.getInstance();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -29,8 +28,8 @@ public class ChallengeCommand implements CommandExecutor {
             } else {
                 if (args[0].equalsIgnoreCase("start")) {
                     if (!challenge.isChallengeActive()) {
-                        challenge.setTimerStartTimestamp(Instant.now());
                         challenge.setChallengeActive(true);
+                        challengeTimer.run();
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             player.setMaxHealth(challenge.getMaxHealth());
                             player.setHealth(challenge.getMaxHealth());
@@ -52,11 +51,9 @@ public class ChallengeCommand implements CommandExecutor {
                                 sender.sendMessage(Messages.challengeAlreadyAdded);
                                 break;
                             }
-                        case "pdare":
-                            if (!challenge.isPDAREChallengeActive()) {
-                                challenge.setPDAREChallengeActive(true);
-                                server.broadcast(Component.text(Messages.prefix + "Added challenge §aPlayer Damage And Random Effects"));
-                                break;
+                        case "nopickup":
+                            if (!challenge.isNoPickupChallengeActive()) {
+                                challenge.setNoPickupChallengeActive(true);
                             } else {
                                 sender.sendMessage(Messages.challengeAlreadyAdded);
                                 break;
@@ -75,6 +72,15 @@ public class ChallengeCommand implements CommandExecutor {
                                 sender.sendMessage(Messages.challengeAlreadyAdded);
                                 break;
                             }
+                        case "pdare":
+                            if (!challenge.isPDAREChallengeActive()) {
+                                challenge.setPDAREChallengeActive(true);
+                                server.broadcast(Component.text(Messages.prefix + "Added challenge §aPlayer Damage And Random Effects"));
+                                break;
+                            } else {
+                                sender.sendMessage(Messages.challengeAlreadyAdded);
+                                break;
+                            }
                         default:
                             sender.sendMessage(Messages.prefix + "§cWrong syntax! §7/challenge add §e<challenge>");
                             break;
@@ -83,7 +89,7 @@ public class ChallengeCommand implements CommandExecutor {
                 } else if (args[0].equalsIgnoreCase("stop")) {
                     if (challenge.isChallengeActive()) {
                         challenge.disableAllChallenges();
-                        challenge.challengeFailed();
+                        challenge.challengeCancel(false);
                     } else {
                         sender.sendMessage(Messages.noChallengeRunning);
                     }

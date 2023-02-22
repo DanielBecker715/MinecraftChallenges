@@ -7,6 +7,6 @@ public class Messages {
     public static String commandParameterError = prefix+"§cWrong syntax! §7/challenge §ehelp";
     public static String challengeStarted = prefix+"The challenge has §astarted";
     public static String noChallengeRunning = prefix+"§cThere is no challenge running";
-    public static String challengeFailed = prefix+"§cThe challenge failed";
+    public static String challengeCancel = prefix+"§cThe challenge has been canceled";
     public static String challengeAlreadyAdded = prefix+"§cThe challenge was already added";
 }
