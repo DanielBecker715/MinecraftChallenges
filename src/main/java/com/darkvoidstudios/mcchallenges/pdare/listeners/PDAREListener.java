@@ -17,7 +17,7 @@ import static org.bukkit.potion.PotionEffectType.*;
 
 public class PDAREListener implements Listener {
 
-    Challenge challenge = Challenge.getInstance();
+    final Challenge challenge = Challenge.getInstance();
 
     int duration;
 

@@ -2,6 +2,7 @@ package com.darkvoidstudios.mcchallenges.challenge.listeners;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +16,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class ChallengeListener implements Listener {
 
-    Challenge challenge = Challenge.getInstance();
+    final Challenge challenge = Challenge.getInstance();
 
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
@@ -37,7 +38,7 @@ public class ChallengeListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().setMaxHealth((challenge.getMaxHealth()));
+        event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(challenge.getMaxHealth());
         event.getPlayer().setHealth(challenge.getMaxHealth());
     }
 

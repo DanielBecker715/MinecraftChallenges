@@ -5,11 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class NoPickupListener implements Listener {
 
-    Challenge challenge = Challenge.getInstance();
+    final Challenge challenge = Challenge.getInstance();
 
     @EventHandler
     public void onPickup(EntityPickupItemEvent event) {

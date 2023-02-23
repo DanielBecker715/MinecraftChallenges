@@ -1,5 +1,6 @@
 package com.darkvoidstudios.mcchallenges.challenge.schedulers;
 
+import com.darkvoidstudios.mcchallenges.Main;
 import com.darkvoidstudios.mcchallenges.challenge.models.ActionbarTimer;
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.randomitem.RandomItem;
@@ -9,21 +10,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.time.Instant;
-
 public class ChallengeTimer extends BukkitRunnable {
 
     private static final ChallengeTimer challengeTimer = new ChallengeTimer();
 
-    final Plugin plugin = getPlugin();
-    Challenge challenge = Challenge.getInstance();
-    ActionbarTimer actionbarTimer = ActionbarTimer.getInstance();
+    final Plugin plugin = Main.getPlugin(Main.class);
+    final Challenge challenge = Challenge.getInstance();
+    final ActionbarTimer actionbarTimer = ActionbarTimer.getInstance();
 
     public static ChallengeTimer getInstance() {
         return challengeTimer;
     }
-
-
 
     @Override
     public void run() {
@@ -38,4 +35,6 @@ public class ChallengeTimer extends BukkitRunnable {
             }
         }, 0, 20);
     }
+
+    //TODO Stop the timer
 }

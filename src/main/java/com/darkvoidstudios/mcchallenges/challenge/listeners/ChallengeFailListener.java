@@ -9,12 +9,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class ChallengeFailListener implements Listener {
-    Challenge challenge = Challenge.getInstance();
+    final Challenge challenge = Challenge.getInstance();
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         if (challenge.isChallengeActive()) {
             challenge.setChallengeActive(false);
+            challenge.abortChallenge(true);
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (player != event.getPlayer()) {
                     player.setGameMode(GameMode.SPECTATOR);
@@ -23,7 +24,6 @@ public class ChallengeFailListener implements Listener {
                     }
                 }
             }
-            challenge.challengeCancel(true);
         }
     }
 }
