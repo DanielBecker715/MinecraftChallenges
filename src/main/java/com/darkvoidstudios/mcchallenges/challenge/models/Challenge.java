@@ -1,5 +1,6 @@
 package com.darkvoidstudios.mcchallenges.challenge.models;
 
+import com.darkvoidstudios.mcchallenges.challenge.schedulers.ChallengeTimer;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -13,6 +14,8 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 public class Challenge {
@@ -25,9 +28,11 @@ public class Challenge {
     }
 
     private static final Server server = Bukkit.getServer();
-    ActionbarTimer actionbarTimer = ActionbarTimer.getInstance();
+    ChallengeTimer challengeTimer = ChallengeTimer.getInstance();
+
 
     //Challenge Settings
+    Instant challengeStartTimestamp;
     boolean isChallengeActive = false;
     double maxHealth = 20;
     private boolean isRandomItemChallengeActive = false;
@@ -45,7 +50,22 @@ public class Challenge {
         setRandomItemChallengeActive(false);
         set5HeartChallengeActive(false);
         setPDAREChallengeActive(false);
+        challengeStartTimestamp = null;
         setMaxHealth(20);
+    }
+
+    public void startChallenge() {
+        setChallengeActive(true);
+        challengeTimer.run();
+        challengeStartTimestamp = Instant.now();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(getMaxHealth());
+            player.setHealth(getMaxHealth());
+            player.setSaturation(20);
+            player.getInventory().clear();
+            player.playSound(player.getLocation(), "entity.wolf.howl", 40f, 1f);
+        }
+        server.broadcast(Component.text(Messages.challengeStarted));
     }
 
     /**
@@ -55,7 +75,7 @@ public class Challenge {
         if (sendLoseMessage) {
             server.broadcast(Component.text("§8----------------------"));
             server.broadcast(Component.text(Messages.challengeCancel));
-            server.broadcast(Component.text(Messages.prefix + "§7Timer: §e§l" + actionbarTimer.getCurrentTimer()));
+            server.broadcast(Component.text(Messages.prefix + "§7Timer: §e§l" + challengeTimer.getTimer()));
             server.broadcast(Component.text("§8----------------------"));
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.playSound(player.getLocation(), "block.anvil.place", 40f, 0f);

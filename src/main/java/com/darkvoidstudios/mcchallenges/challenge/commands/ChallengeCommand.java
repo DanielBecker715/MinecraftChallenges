@@ -30,16 +30,7 @@ public class ChallengeCommand implements CommandExecutor {
             } else {
                 if (args[0].equalsIgnoreCase("start")) {
                     if (!challenge.isChallengeActive()) {
-                        challenge.setChallengeActive(true);
-                        challengeTimer.run();
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(challenge.getMaxHealth());
-                            player.setHealth(challenge.getMaxHealth());
-                            player.setSaturation(20);
-                            player.getInventory().clear();
-                            player.playSound(player.getLocation(), "entity.wolf.howl", 40f, 1f);
-                        }
-                        server.broadcast(Component.text(Messages.challengeStarted));
+                        challenge.startChallenge();
                     }
                 } else if (args[0].equalsIgnoreCase("add")) {
                     //User input
