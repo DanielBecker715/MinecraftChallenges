@@ -3,7 +3,6 @@ package com.darkvoidstudios.mcchallenges.challenge.commands;
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.challenge.models.ChallengeEnum;
 import com.darkvoidstudios.mcchallenges.challenge.models.Messages;
-import com.darkvoidstudios.mcchallenges.challenge.schedulers.ChallengeTimer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -20,7 +19,6 @@ public class ChallengeCommand implements CommandExecutor {
     private static final Server server = Bukkit.getServer();
 
     final Challenge challenge = Challenge.getInstance();
-    final ChallengeTimer challengeTimer = ChallengeTimer.getInstance();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -74,20 +72,27 @@ public class ChallengeCommand implements CommandExecutor {
                                     sender.sendMessage(Messages.challengeAlreadyAdded);
                                 }
                                 break;
+                            case JumpingHotbar:
+                                if (!challenge.isJumpingHotbarActive()) {
+                                    challenge.setJumpingHotbarActive(true);
+                                    server.broadcast(Component.text(Messages.prefix + "Added challenge §aJumping Hotbar"));
+                                } else {
+                                    sender.sendMessage(Messages.challengeAlreadyAdded);
+                                }
+                                break;
                             default:
                                 sender.sendMessage(Messages.prefix + "§cWrong syntax! §7/challenge add §e<challenge>");
                                 break;
                         }
                     } else {
-                        sender.sendMessage(Messages.prefix + "§cThe challenge §e"+args[0]+" §cdoesn't exists");
+                        sender.sendMessage(Messages.prefix + "§cThe challenge §e"+args[1]+" §cdoesn't exists");
                     }
                 } else if (args[0].equalsIgnoreCase("list")) {
-                    String allChallenges = ChallengeEnum.getListOfAllChallenges().stream()
+                    String allChallenges = "§a"+ChallengeEnum.getListOfAllChallenges().stream()
                             .map( Object::toString )
-                            .collect(Collectors.joining(","));
+                            .collect(Collectors.joining("§7,§a "));
 
-                    sender.sendMessage(Messages.prefix+"A list of all challenges:");
-                    sender.sendMessage(allChallenges.toLowerCase());
+                    sender.sendMessage(Messages.prefix+"A list of all challenges: "+allChallenges.toLowerCase());
                 } else if (args[0].equalsIgnoreCase("stop")) {
                     if (challenge.isChallengeActive()) {
                         challenge.resetAllChallenges();

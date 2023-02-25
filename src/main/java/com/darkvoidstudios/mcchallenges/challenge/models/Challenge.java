@@ -40,6 +40,7 @@ public class Challenge {
     private boolean is5HeartChallengeActive = false;
     //PDARE = Player Damage And Random Effects
     private boolean isPDAREChallengeActive = false;
+    private boolean isJumpingHotbarActive = false;
 
 
     /**
@@ -50,14 +51,14 @@ public class Challenge {
         setRandomItemChallengeActive(false);
         set5HeartChallengeActive(false);
         setPDAREChallengeActive(false);
+        setJumpingHotbarActive(false);
         challengeStartTimestamp = null;
         setMaxHealth(20);
     }
 
     public void startChallenge() {
         setChallengeActive(true);
-        challengeTimer.run();
-        challengeStartTimestamp = Instant.now();
+        setChallengeStartTimestamp(Instant.now());
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(getMaxHealth());
             player.setHealth(getMaxHealth());
@@ -73,10 +74,8 @@ public class Challenge {
      */
     public void abortChallenge(boolean sendLoseMessage) {
         if (sendLoseMessage) {
-            server.broadcast(Component.text("§8----------------------"));
             server.broadcast(Component.text(Messages.challengeCancel));
             server.broadcast(Component.text(Messages.prefix + "§7Timer: §e§l" + challengeTimer.getTimer()));
-            server.broadcast(Component.text("§8----------------------"));
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.playSound(player.getLocation(), "block.anvil.place", 40f, 0f);
             }

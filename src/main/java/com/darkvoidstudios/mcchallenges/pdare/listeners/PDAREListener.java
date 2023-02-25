@@ -2,6 +2,8 @@ package com.darkvoidstudios.mcchallenges.pdare.listeners;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.challenge.models.Messages;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,17 +17,19 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static org.bukkit.potion.PotionEffectType.*;
 
+@Getter
+@Setter
 public class PDAREListener implements Listener {
 
     final Challenge challenge = Challenge.getInstance();
 
-    int duration;
+    int potionDuration;
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (!(((EntityDamageByEntityEvent)event).getDamager() instanceof Player)) {
-            if (event.getEntity() instanceof Player) {
-                if (challenge.isChallengeActive() && challenge.isPDAREChallengeActive()) {
+        if (challenge.isChallengeActive() && challenge.isPDAREChallengeActive()) {
+            if (!(((EntityDamageByEntityEvent)event).getDamager() instanceof Player)) {
+                if (event.getEntity() instanceof Player) {
                     Player player = (Player) event.getEntity();
                     boolean triggerEvent = true;
 
@@ -43,7 +47,7 @@ public class PDAREListener implements Listener {
                     if (triggerEvent) {
                         PotionEffect potionEffect = generatePotionEffect();
                         player.addPotionEffect(potionEffect);
-                        player.sendMessage(Messages.prefix + "You got the effect §e" + potionEffect.getType().getName() + "§7 for §e" + duration/20 + " seconds");
+                        player.sendMessage(Messages.prefix + "You got the effect §e" + potionEffect.getType().getName() + "§7 for §e" + getPotionDuration() /20 + " seconds");
                     }
                 }
             }
@@ -58,12 +62,12 @@ public class PDAREListener implements Listener {
             return generatePotionEffect();
         }
 
+        Random random = new Random();
         if (potionEffectType.equals(WITHER) || potionEffectType.equals(POISON)) {
-            duration = new Random().nextInt(10 - 5) + 5;
-            return new PotionEffect(potionEffectType, duration * 20, 1);
+            setPotionDuration(random.nextInt(10 - 5) + 5);
+            return new PotionEffect(potionEffectType, getPotionDuration() * 20, 1);
         }
-
-        duration = new Random().nextInt(30 - 10) + 10;
-        return new PotionEffect(potionEffectType, duration * 20, 1);
+        setPotionDuration(random.nextInt(30 - 10) + 10);
+        return new PotionEffect(potionEffectType, getPotionDuration() * 20, 1);
     }
 }

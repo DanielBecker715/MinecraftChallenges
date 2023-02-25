@@ -1,6 +1,6 @@
 package com.darkvoidstudios.mcchallenges.challenge.schedulers;
 
-import com.darkvoidstudios.mcchallenges.Main;
+import com.darkvoidstudios.mcchallenges.MinecraftPlugin;
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.randomitem.RandomItem;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
@@ -22,9 +21,7 @@ public class ChallengeTimer extends BukkitRunnable {
     public static ChallengeTimer getInstance() {
         return challengeTimer;
     }
-
-    final Plugin plugin = Main.getPlugin(Main.class);
-    final Challenge challenge = Challenge.getInstance();
+    static final Challenge challenge = Challenge.getInstance();
 
     long currentDays;
     int currentHours;
@@ -33,10 +30,15 @@ public class ChallengeTimer extends BukkitRunnable {
 
     @Override
     public void run() {
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(MinecraftPlugin.getPlugin(), () -> {
             if (challenge.isChallengeActive()) {
-                if (challenge.isRandomItemChallengeActive() && currentSeconds == 30) {
-                    RandomItem.distributeRandomItemsToAllPlayers();
+                if (challenge.isRandomItemChallengeActive()) {
+                    switch (currentSeconds) {
+                        case 0:
+                        case 29:
+                            RandomItem.distributeRandomItemsToAllPlayers();
+                            break;
+                    }
                 }
 
                 for (Player player : Bukkit.getOnlinePlayers()) {

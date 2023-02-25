@@ -1,9 +1,9 @@
-name: Challange
+name: Challenge
 version: '${project.version}'
-main: com.darkvoidstudios.mcchallenges.Main
+main: com.darkvoidstudios.mcchallenges.MinecraftPlugin
 description: This plugin does so much stuff it can't be contained!
 author: Brok3nmind
 api-version: 1.19
 commands:
   challenge:
-    description: Toggles the challanges
+    description: Toggles the challenges

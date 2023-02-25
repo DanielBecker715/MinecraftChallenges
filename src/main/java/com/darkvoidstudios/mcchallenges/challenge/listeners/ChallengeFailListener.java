@@ -1,6 +1,8 @@
 package com.darkvoidstudios.mcchallenges.challenge.listeners;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -14,15 +16,18 @@ public class ChallengeFailListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         if (challenge.isChallengeActive()) {
-            challenge.setChallengeActive(false);
-            challenge.abortChallenge(true);
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player != event.getPlayer()) {
+            if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+                challenge.setChallengeActive(false);
+                challenge.abortChallenge(true);
+                challenge.resetAllChallenges();
+                for (Player player : Bukkit.getOnlinePlayers()) {
                     player.setGameMode(GameMode.SPECTATOR);
-                    if (event.getPlayer() != player) {
+                    player.showTitle(Title.title(Component.text("§c§lGAME OVER"), Component.text("")));
+                    if (player != event.getPlayer()) {
                         player.teleport(event.getPlayer());
                     }
                 }
+                event.setCancelled(true);
             }
         }
     }

@@ -21,7 +21,7 @@ public class ChallengeListener implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
         if (!challenge.isChallengeActive()) {
-            if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+            if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
                 event.setCancelled(true);
             }
         }
@@ -30,7 +30,7 @@ public class ChallengeListener implements Listener {
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
         if (!challenge.isChallengeActive()) {
-            if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+            if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
                 event.setCancelled(true);
             }
         }
@@ -45,7 +45,7 @@ public class ChallengeListener implements Listener {
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         if (!challenge.isChallengeActive()) {
-            if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+            if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
                 event.setCancelled(true);
             }
         }
@@ -56,7 +56,7 @@ public class ChallengeListener implements Listener {
         if (!challenge.isChallengeActive()) {
             if (event.getEntity() instanceof Player) {
                 Player player = (Player) event.getEntity();
-                if (player.getGameMode() != GameMode.CREATIVE) {
+                if (!player.getGameMode().equals(GameMode.CREATIVE)) {
                     event.setCancelled(true);
                 }
             }
@@ -66,7 +66,7 @@ public class ChallengeListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (!challenge.isChallengeActive()) {
-            if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+            if (!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
                 event.setCancelled(true);
             }
         }
