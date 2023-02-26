@@ -28,6 +28,7 @@ public class JumpingHotbarListener implements Listener {
                 player.playSound(player.getLocation(), "ui.button.click", 1f, 2f);
 
                 List<ItemStack> randomItemList = RandomItem.generateRandomItemStacks(9);
+
                 //Sets random items to the hotbar
                 for (int i=0; i<randomItemList.size(); i++) {
                     event.getPlayer().getInventory().setItem(i, randomItemList.get(i));

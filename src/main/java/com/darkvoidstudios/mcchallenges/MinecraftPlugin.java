@@ -5,6 +5,7 @@ import com.darkvoidstudios.mcchallenges.challenge.listeners.ChallengeCompleteLis
 import com.darkvoidstudios.mcchallenges.challenge.listeners.ChallengeFailListener;
 import com.darkvoidstudios.mcchallenges.challenge.listeners.ChallengeListener;
 import com.darkvoidstudios.mcchallenges.challenge.schedulers.ChallengeTimer;
+import com.darkvoidstudios.mcchallenges.icewalk.listener.IceWalkListener;
 import com.darkvoidstudios.mcchallenges.jumpinghotbar.listener.JumpingHotbarListener;
 import com.darkvoidstudios.mcchallenges.pdare.listeners.PDAREListener;
 import org.bukkit.Bukkit;
@@ -31,6 +32,7 @@ public final class MinecraftPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChallengeFailListener(), this);
         getServer().getPluginManager().registerEvents(new PDAREListener(), this);
         getServer().getPluginManager().registerEvents(new JumpingHotbarListener(), this);
+        getServer().getPluginManager().registerEvents(new IceWalkListener(), this);
     }
 
     public static Plugin getPlugin() {

@@ -41,6 +41,7 @@ public class Challenge {
     //PDARE = Player Damage And Random Effects
     private boolean isPDAREChallengeActive = false;
     private boolean isJumpingHotbarActive = false;
+    private boolean isIceWalkActive = false;
 
 
     /**
@@ -52,6 +53,7 @@ public class Challenge {
         set5HeartChallengeActive(false);
         setPDAREChallengeActive(false);
         setJumpingHotbarActive(false);
+        setIceWalkActive(false);
         challengeStartTimestamp = null;
         setMaxHealth(20);
     }
