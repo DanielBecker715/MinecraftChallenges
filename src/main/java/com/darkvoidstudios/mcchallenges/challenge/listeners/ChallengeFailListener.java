@@ -27,6 +27,7 @@ public class ChallengeFailListener implements Listener {
                 dropAllPlayerItems(event.getPlayer());
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.setAllowFlight(true);
+                    player.setFlying(true);
                     player.getInventory().clear();
                     player.showTitle(Title.title(Component.text("§c§lGAME OVER"), Component.text("")));
                     if (player != event.getPlayer()) {

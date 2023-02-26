@@ -91,6 +91,7 @@ public class IceWalkListener implements Listener {
                         case GLOW_LICHEN:
                         case HANGING_ROOTS:
                         case FROGSPAWN:
+                        case SNOW:
                             theBlock.setType(material);
                     }
                 }

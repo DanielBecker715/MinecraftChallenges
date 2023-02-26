@@ -65,6 +65,8 @@ public class Challenge {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(getMaxHealth());
             player.setHealth(getMaxHealth());
             player.setSaturation(20);
+            player.setFlying(false);
+            player.setAllowFlight(false);
             player.getInventory().clear();
             player.playSound(player.getLocation(), "entity.wolf.howl", 40f, 1f);
         }
