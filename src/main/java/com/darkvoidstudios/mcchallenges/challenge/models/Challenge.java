@@ -4,10 +4,7 @@ import com.darkvoidstudios.mcchallenges.challenge.schedulers.ChallengeTimer;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Server;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -38,10 +35,11 @@ public class Challenge {
     private boolean isRandomItemChallengeActive = false;
     private boolean isNoPickupChallengeActive = false;
     private boolean is5HeartChallengeActive = false;
-    //PDARE = Player Damage And Random Effects
-    private boolean isPDAREChallengeActive = false;
+    private boolean isDamageEffectsChallengeActive = false;
     private boolean isJumpingHotbarActive = false;
     private boolean isIceWalkActive = false;
+    private boolean isDelayedDamageActive = false;
+    private boolean isNoArmorChallengeActive = false;
 
 
     /**
@@ -50,10 +48,13 @@ public class Challenge {
     public void resetAllChallenges() {
         setChallengeActive(false);
         setRandomItemChallengeActive(false);
+        setNoPickupChallengeActive(false);
         set5HeartChallengeActive(false);
-        setPDAREChallengeActive(false);
+        setDamageEffectsChallengeActive(false);
         setJumpingHotbarActive(false);
         setIceWalkActive(false);
+        setDelayedDamageActive(false);
+        setNoArmorChallengeActive(false);
         challengeStartTimestamp = null;
         setMaxHealth(20);
     }
@@ -64,11 +65,13 @@ public class Challenge {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(getMaxHealth());
             player.setHealth(getMaxHealth());
-            player.setSaturation(20);
-            player.setFlying(false);
-            player.setAllowFlight(false);
+            player.setSaturation(20L);
+
             player.getInventory().clear();
             player.playSound(player.getLocation(), "entity.wolf.howl", 40f, 1f);
+            if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+                player.setAllowFlight(false);
+            }
         }
         server.broadcast(Component.text(Messages.challengeStarted));
     }
@@ -102,6 +105,8 @@ public class Challenge {
             FireworkMeta fwm = fw.getFireworkMeta();
             fwm.setPower(2);
             fwm.addEffect(FireworkEffect.builder().withColor(Color.LIME).flicker(true).build());
+            player.playSound(player.getLocation(), "ui.toast.challenge_complete", 40f, 1f);
+
             for (int i = 0; i < 5; i++) {
                 fw.detonate();
             }

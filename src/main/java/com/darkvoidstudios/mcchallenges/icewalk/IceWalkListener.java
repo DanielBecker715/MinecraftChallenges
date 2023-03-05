@@ -1,4 +1,4 @@
-package com.darkvoidstudios.mcchallenges.icewalk.listener;
+package com.darkvoidstudios.mcchallenges.icewalk;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.challenge.models.Messages;
@@ -9,29 +9,36 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class IceWalkListener implements Listener {
 
-    Challenge challenge = Challenge.getInstance();
+    final Challenge challenge = Challenge.getInstance();
 
-    boolean isIceActive = false;
+    Map<Player, Boolean> isIceActive = new HashMap<>();
 
     @EventHandler
-    public void onWalk(PlayerMoveEvent event) {
+    void onJoin(PlayerJoinEvent event) {
+        isIceActive.put(event.getPlayer(), false);
+    }
 
+    @EventHandler
+    void onWalk(PlayerMoveEvent event) {
         if (challenge.isChallengeActive() && challenge.isIceWalkActive()) {
             Player player = event.getPlayer();
-            if (isIceActive && !player.getGameMode().equals(GameMode.CREATIVE)) {
+            if (isIceActive.get(player) && !player.getGameMode().equals(GameMode.CREATIVE)) {
                 Location blockUnderPlayer = new Location(player.getWorld(), player.getLocation().x(), player.getLocation().y() - 1, player.getLocation().z());
-
                 int radius = 1;
                 for (int i=-radius; i <= radius; i++) {
                     for (int k = -radius; k <= radius; k++) {
                         if (blockUnderPlayer.getBlock().getRelative(i, 0, k).getType() == Material.AIR) {
                             setFloor(blockUnderPlayer, radius, Material.PACKED_ICE);
-                        };
+                        }
                     }
                 }
             }
@@ -43,11 +50,11 @@ public class IceWalkListener implements Listener {
         Player player = event.getPlayer();
         if (player.isSneaking() && !player.getGameMode().equals(GameMode.CREATIVE)) {
             if (challenge.isChallengeActive() && challenge.isIceWalkActive()) {
-                if (isIceActive) {
-                    isIceActive = false;
+                if (isIceActive.get(player)) {
+                    isIceActive.put(player, false);
                     player.sendMessage(Messages.prefix + "IceWalk is now §coff");
                 } else {
-                    isIceActive = true;
+                    isIceActive.put(player, true);
                     player.sendMessage(Messages.prefix + "IceWalk is now §aon");
                 }
             }

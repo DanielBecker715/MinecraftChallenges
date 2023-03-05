@@ -31,76 +31,97 @@ public class ChallengeCommand implements CommandExecutor {
                         challenge.startChallenge();
                     }
                 } else if (args[0].equalsIgnoreCase("add")) {
-                    //User input
-                    ChallengeEnum inputChallenge = ChallengeEnum.forNameIgnoreCase(args[1]);
-                    if (inputChallenge != null) {
-                        // Challenges
-                        switch(inputChallenge) {
-                            case RANDOMITEMS:
-                                if (!challenge.isRandomItemChallengeActive()) {
-                                    challenge.setRandomItemChallengeActive(true);
-                                    server.broadcast(Component.text(Messages.prefix + "Added challenge §aRandom-Items"));
-                                } else {
-                                    sender.sendMessage(Messages.challengeAlreadyAdded);
-                                }
-                                break;
-                            case NOPICKUP:
-                                if (!challenge.isNoPickupChallengeActive()) {
-                                    challenge.setNoPickupChallengeActive(true);
-                                } else {
-                                    sender.sendMessage(Messages.challengeAlreadyAdded);
-                                }
-                                break;
-                            case FIVEHEARTS:
-                                if (!challenge.is5HeartChallengeActive()) {
-                                    challenge.set5HeartChallengeActive(true);
-                                    challenge.setMaxHealth(10);
-                                    for (Player player : Bukkit.getOnlinePlayers()) {
-                                        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(challenge.getMaxHealth());
-                                        player.setHealth(challenge.getMaxHealth());
+                    if (!args[1].isEmpty()) {
+                        //User input
+                        ChallengeEnum inputChallenge = ChallengeEnum.forNameIgnoreCase(args[1]);
+                        if (inputChallenge != null) {
+                            // Challenges
+                            switch (inputChallenge) {
+                                case RANDOMITEMS:
+                                    if (!challenge.isRandomItemChallengeActive()) {
+                                        challenge.setRandomItemChallengeActive(true);
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aRandom-Items"));
+                                    } else {
+                                        sender.sendMessage(Messages.challengeAlreadyAdded);
                                     }
-                                    server.broadcast(Component.text(Messages.prefix + "Added challenge §a5-Hearts"));
-                                } else {
-                                    sender.sendMessage(Messages.challengeAlreadyAdded);
-                                }
-                                break;
-                            case PDARE:
-                                if (!challenge.isPDAREChallengeActive()) {
-                                    challenge.setPDAREChallengeActive(true);
-                                    server.broadcast(Component.text(Messages.prefix + "Added challenge §aPlayer Damage And Random Effects"));
-                                } else {
-                                    sender.sendMessage(Messages.challengeAlreadyAdded);
-                                }
-                                break;
-                            case JumpingHotbar:
-                                if (!challenge.isJumpingHotbarActive()) {
-                                    challenge.setJumpingHotbarActive(true);
-                                    server.broadcast(Component.text(Messages.prefix + "Added challenge §aJumping Hotbar"));
-                                } else {
-                                    sender.sendMessage(Messages.challengeAlreadyAdded);
-                                }
-                                break;
-                            case IceWalk:
-                                if (!challenge.isIceWalkActive()) {
-                                    challenge.setIceWalkActive(true);
-                                    server.broadcast(Component.text(Messages.prefix + "Added challenge §aIceWalk"));
-                                } else {
-                                    sender.sendMessage(Messages.challengeAlreadyAdded);
-                                }
-                                break;
-                            default:
-                                sender.sendMessage(Messages.prefix + "§cWrong syntax! §7/challenge add §e<challenge>");
-                                break;
+                                    break;
+                                case NOPICKUP:
+                                    if (!challenge.isNoPickupChallengeActive()) {
+                                        challenge.setNoPickupChallengeActive(true);
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aNo-Pickup"));
+                                    } else {
+                                        sender.sendMessage(Messages.challengeAlreadyAdded);
+                                    }
+                                    break;
+                                case FIVEHEARTS:
+                                    if (!challenge.is5HeartChallengeActive()) {
+                                        challenge.set5HeartChallengeActive(true);
+                                        challenge.setMaxHealth(10);
+                                        for (Player player : Bukkit.getOnlinePlayers()) {
+                                            player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(challenge.getMaxHealth());
+                                            player.setHealth(challenge.getMaxHealth());
+                                        }
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §a5-Hearts"));
+                                    } else {
+                                        sender.sendMessage(Messages.challengeAlreadyAdded);
+                                    }
+                                    break;
+                                case DAMAGEEFFECTS:
+                                    if (!challenge.isDamageEffectsChallengeActive()) {
+                                        challenge.setDamageEffectsChallengeActive(true);
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aPlayer Damage And Random Effects"));
+                                    } else {
+                                        sender.sendMessage(Messages.challengeAlreadyAdded);
+                                    }
+                                    break;
+                                case JUMPINGHOTBAR:
+                                    if (!challenge.isJumpingHotbarActive()) {
+                                        challenge.setJumpingHotbarActive(true);
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aJumping Hotbar"));
+                                    } else {
+                                        sender.sendMessage(Messages.challengeAlreadyAdded);
+                                    }
+                                    break;
+                                case ICEWALK:
+                                    if (!challenge.isIceWalkActive()) {
+                                        challenge.setIceWalkActive(true);
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aIceWalk"));
+                                    } else {
+                                        sender.sendMessage(Messages.challengeAlreadyAdded);
+                                    }
+                                    break;
+                                case DELAYEDDAMAGE:
+                                    if (!challenge.isDelayedDamageActive()) {
+                                        challenge.setDelayedDamageActive(true);
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aDelayed-Damage"));
+                                    } else {
+                                        sender.sendMessage(Messages.challengeAlreadyAdded);
+                                    }
+                                    break;
+                                case NO:
+                                    if (!challenge.isDelayedDamageActive()) {
+                                        challenge.setDelayedDamageActive(true);
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aDelayed-Damage"));
+                                    } else {
+                                        sender.sendMessage(Messages.challengeAlreadyAdded);
+                                    }
+                                    break;
+                                default:
+                                    sender.sendMessage(Messages.prefix + "§cWrong syntax! §7/challenge add §e<challenge>");
+                                    break;
+                            }
+                        } else {
+                            sender.sendMessage(Messages.prefix + "§cThe challenge §e" + args[1] + " §cdoesn't exists");
                         }
                     } else {
-                        sender.sendMessage(Messages.prefix + "§cThe challenge §e"+args[1]+" §cdoesn't exists");
+                        sender.sendMessage(Messages.prefix + "§cYou have to specify a challenge");
                     }
                 } else if (args[0].equalsIgnoreCase("list")) {
                     String allChallenges = "§a"+ChallengeEnum.getListOfAllChallenges().stream()
                             .map( Object::toString )
                             .collect(Collectors.joining("§7,§a "));
 
-                    sender.sendMessage(Messages.prefix+"A list of all challenges: "+allChallenges.toLowerCase());
+                    sender.sendMessage(Messages.prefix+"A list of all challenges §e("+ChallengeEnum.values().length+")§7: "+allChallenges.toLowerCase());
                 } else if (args[0].equalsIgnoreCase("stop")) {
                     if (challenge.isChallengeActive()) {
                         challenge.resetAllChallenges();
