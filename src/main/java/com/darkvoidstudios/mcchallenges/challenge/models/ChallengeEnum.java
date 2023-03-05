@@ -12,7 +12,8 @@ public enum ChallengeEnum {
     NOPICKUP,
     FIVEHEARTS,
     PDARE,
-    JumpingHotbar;
+    JumpingHotbar,
+    IceWalk;
 
     public static List<ChallengeEnum> getListOfAllChallenges() {
         return Arrays.asList(ChallengeEnum.values());

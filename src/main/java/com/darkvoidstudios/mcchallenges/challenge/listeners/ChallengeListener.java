@@ -1,6 +1,7 @@
 package com.darkvoidstudios.mcchallenges.challenge.listeners;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
+import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -78,4 +79,12 @@ public class ChallengeListener implements Listener {
             event.setCancelled(true);
         }
     }
+
+    @EventHandler
+    public void onEntityMove(EntityMoveEvent event) {
+        if (!challenge.isChallengeActive() && (!(event.getEntity() instanceof Player))) {
+            event.setCancelled(true);
+        }
+    }
+
 }

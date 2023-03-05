@@ -80,6 +80,14 @@ public class ChallengeCommand implements CommandExecutor {
                                     sender.sendMessage(Messages.challengeAlreadyAdded);
                                 }
                                 break;
+                            case IceWalk:
+                                if (!challenge.isIceWalkActive()) {
+                                    challenge.setIceWalkActive(true);
+                                    server.broadcast(Component.text(Messages.prefix + "Added challenge §aIceWalk"));
+                                } else {
+                                    sender.sendMessage(Messages.challengeAlreadyAdded);
+                                }
+                                break;
                             default:
                                 sender.sendMessage(Messages.prefix + "§cWrong syntax! §7/challenge add §e<challenge>");
                                 break;
