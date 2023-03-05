@@ -1,4 +1,4 @@
-package com.darkvoidstudios.mcchallenges.nopickup.listeners;
+package com.darkvoidstudios.mcchallenges.nopickup;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package com.darkvoidstudios.mcchallenges.pdare.listeners;
+package com.darkvoidstudios.mcchallenges.damageeffects;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.challenge.models.Messages;
@@ -19,7 +19,7 @@ import static org.bukkit.potion.PotionEffectType.*;
 
 @Getter
 @Setter
-public class PDAREListener implements Listener {
+public class DamageEffectsListener implements Listener {
 
     final Challenge challenge = Challenge.getInstance();
 
@@ -27,7 +27,7 @@ public class PDAREListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (challenge.isChallengeActive() && challenge.isPDAREChallengeActive()) {
+        if (challenge.isChallengeActive() && challenge.isDamageEffectsChallengeActive()) {
             if (!(((EntityDamageByEntityEvent)event).getDamager() instanceof Player)) {
                 if (event.getEntity() instanceof Player) {
                     Player player = (Player) event.getEntity();

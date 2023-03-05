@@ -7,12 +7,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class challengeScoreboardScheduler extends BukkitRunnable {
 
-    ChallengeScoreboard challengeScoreboard = ChallengeScoreboard.getInstance();
+    final ChallengeScoreboard challengeScoreboard = ChallengeScoreboard.getInstance();
 
     @Override
     public void run() {
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(MinecraftPlugin.getPlugin(), () -> {
-            challengeScoreboard.updateScoreboard();
-        }, 0, 20);
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(MinecraftPlugin.getPlugin(), challengeScoreboard::updateScoreboard, 0, 20);
     }
 }

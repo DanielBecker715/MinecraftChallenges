@@ -15,9 +15,9 @@ public class RandomItem {
 
     static final Challenge challenge = Challenge.getInstance();
 
-    static List<Material> materialList = Arrays.asList(Material.values());
+    static final List<Material> materialList = Arrays.asList(Material.values());
 
-    static Random random = new Random();
+    static final Random random = new Random();
 
     public static boolean isMaterialAllowed(Material material) {
         if (material.name().contains("BAMBOO")) {
@@ -27,6 +27,7 @@ public class RandomItem {
         switch (material) {
             case BEDROCK:
             case WARDEN_SPAWN_EGG:
+            case WITHER_SPAWN_EGG:
             case ENDER_DRAGON_SPAWN_EGG:
             case END_PORTAL_FRAME:
             case COMMAND_BLOCK:
@@ -36,6 +37,8 @@ public class RandomItem {
             case BARRIER:
             case DEBUG_STICK:
             case ENCHANTED_BOOK:
+            case STRUCTURE_VOID:
+            case LIGHT:
                 return false;
             default:
                 return true;
@@ -59,13 +62,14 @@ public class RandomItem {
     }
 
     public static ItemStack generateRandomItemStack() {
-        int maxAmount = (int) (Math.random() * (64 - 1)) + 1;
-
         Material randomItem = materialList.get(random.nextInt(materialList.size()));
-        if (!randomItem.isItem() && isMaterialAllowed(randomItem)) {
+        int maxAmount = (int) (Math.random() * (randomItem.getMaxStackSize() - 1)) + 1;
+
+        if (!randomItem.isItem() || !isMaterialAllowed(randomItem)) {
             return generateRandomItemStack();
+        } else {
+            int materialId = materialList.indexOf(randomItem);
+            return (new ItemStack(Material.values()[materialId], Math.min(Material.values()[materialId].getMaxStackSize(), maxAmount)));
         }
-        int materialId = materialList.indexOf(randomItem);
-        return (new ItemStack(Material.values()[materialId], Math.min(Material.values()[materialId].getMaxStackSize(), maxAmount)));
     }
 }

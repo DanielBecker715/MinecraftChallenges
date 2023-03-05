@@ -1,4 +1,4 @@
-package com.darkvoidstudios.mcchallenges.jumpinghotbar.listener;
+package com.darkvoidstudios.mcchallenges.jumpinghotbar;
 
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.randomitem.RandomItem;
@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -56,6 +57,14 @@ public class JumpingHotbarListener implements Listener {
                 if (event.getSlot() > latestHotbarSlot) {
                     event.setCancelled(true);
                 }
+            }
+        }
+    }
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        if (!(event.getInventory().getHolder() instanceof Player)) {
+            if (challenge.isChallengeActive() && challenge.isJumpingHotbarActive()) {
+                event.setCancelled(true);
             }
         }
     }
