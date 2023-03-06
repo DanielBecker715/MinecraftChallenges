@@ -10,6 +10,7 @@ import com.darkvoidstudios.mcchallenges.delayeddamage.listener.DelayedDamageList
 import com.darkvoidstudios.mcchallenges.delayeddamage.schedulers.DelayedDamageScheduler;
 import com.darkvoidstudios.mcchallenges.icewalk.IceWalkListener;
 import com.darkvoidstudios.mcchallenges.jumpinghotbar.JumpingHotbarListener;
+import com.darkvoidstudios.mcchallenges.noarmor.listener.NoArmorListener;
 import com.darkvoidstudios.mcchallenges.nopickup.NoPickupListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -40,6 +41,7 @@ public final class MinecraftPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JumpingHotbarListener(), this);
         getServer().getPluginManager().registerEvents(new IceWalkListener(), this);
         getServer().getPluginManager().registerEvents(new DelayedDamageListener(), this);
+        getServer().getPluginManager().registerEvents(new NoArmorListener(), this);
     }
 
     private void schedulerRegistration() {
