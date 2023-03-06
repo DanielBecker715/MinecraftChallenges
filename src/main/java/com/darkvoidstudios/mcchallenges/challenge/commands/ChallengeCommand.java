@@ -3,8 +3,11 @@ package com.darkvoidstudios.mcchallenges.challenge.commands;
 import com.darkvoidstudios.mcchallenges.challenge.models.Challenge;
 import com.darkvoidstudios.mcchallenges.challenge.models.ChallengeEnum;
 import com.darkvoidstudios.mcchallenges.challenge.models.Messages;
+import com.darkvoidstudios.mcchallenges.noarmor.NoArmorChallenge;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
@@ -98,10 +101,15 @@ public class ChallengeCommand implements CommandExecutor {
                                         sender.sendMessage(Messages.challengeAlreadyAdded);
                                     }
                                     break;
-                                case NO:
-                                    if (!challenge.isDelayedDamageActive()) {
-                                        challenge.setDelayedDamageActive(true);
-                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aDelayed-Damage"));
+                                case NOARMOR:
+                                    if (!challenge.isNoArmorChallengeActive()) {
+                                        challenge.setNoArmorChallengeActive(true);
+                                        for (Player player : Bukkit.getOnlinePlayers()) {
+                                            if (player.getGameMode() == GameMode.SURVIVAL || player.getGameMode() == GameMode.ADVENTURE) {
+                                                NoArmorChallenge.replaceArmor(player, Material.BARRIER);
+                                            }
+                                        }
+                                        server.broadcast(Component.text(Messages.prefix + "Added challenge §aNo-Armor"));
                                     } else {
                                         sender.sendMessage(Messages.challengeAlreadyAdded);
                                     }

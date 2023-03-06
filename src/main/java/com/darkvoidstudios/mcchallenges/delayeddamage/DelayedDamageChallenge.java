@@ -11,12 +11,12 @@ import org.bukkit.entity.Player;
 
 @Getter
 @Setter
-public class DelayedDamage {
+public class DelayedDamageChallenge {
 
-    static final DelayedDamage delayedDamage = new DelayedDamage();
+    static final DelayedDamageChallenge DELAYED_DAMAGE_CHALLENGE = new DelayedDamageChallenge();
 
-    public static DelayedDamage getInstance() {
-        return delayedDamage;
+    public static DelayedDamageChallenge getInstance() {
+        return DELAYED_DAMAGE_CHALLENGE;
     }
     static final Challenge challenge = Challenge.getInstance();
     private static final Server server = Bukkit.getServer();
@@ -27,9 +27,9 @@ public class DelayedDamage {
 
     public void distributeDamage() {
         if (challenge.isChallengeActive() && challenge.isDelayedDamageActive()) {
-            server.sendMessage(Component.text(Messages.prefix + "§aA total §cdamage §aof §e" + delayedDamage.getDamageOfAllPlayers()/2 + " Hearts §awas reached"));
+            server.sendMessage(Component.text(Messages.prefix + "§aA total §cdamage §aof §e" + DELAYED_DAMAGE_CHALLENGE.getDamageOfAllPlayers()/2 + " Hearts §awas reached"));
             for (Player player : Bukkit.getOnlinePlayers()) {
-                double damagePerPlayer = Math.round(delayedDamage.getDamageOfAllPlayers() / Bukkit.getOnlinePlayers().size() * 100.0) / 100.0;
+                double damagePerPlayer = Math.round(DELAYED_DAMAGE_CHALLENGE.getDamageOfAllPlayers() / Bukkit.getOnlinePlayers().size() * 100.0) / 100.0;
                 if (damagePerPlayer >= player.getHealth()) {
                     player.damage(player.getHealth());
                 } else {
