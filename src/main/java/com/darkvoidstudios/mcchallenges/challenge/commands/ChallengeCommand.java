@@ -98,7 +98,7 @@ public class ChallengeCommand implements CommandExecutor {
                                         sender.sendMessage(Messages.challengeAlreadyAdded);
                                     }
                                     break;
-                                case NO:
+                                case NOARMOR:
                                     if (!challenge.isDelayedDamageActive()) {
                                         challenge.setDelayedDamageActive(true);
                                         server.broadcast(Component.text(Messages.prefix + "Added challenge §aDelayed-Damage"));
